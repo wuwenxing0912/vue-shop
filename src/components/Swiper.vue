@@ -31,8 +31,8 @@ export default {
         lists: {
             type: Array,
             required: true
-        },
-        name: {}
+        },//动态绑定数据
+        name: {}//静态绑定数据
     },
 
     mounted() {
