@@ -21,7 +21,7 @@ new Vue({
         bannerLists: null
     },
     created() {
-        this.getLists()
+        this.getLists() //首页数据
         this.getBanner()
     },
     methods: {
@@ -45,14 +45,14 @@ new Vue({
                 this.loading = false
             }).catch(e => { console.log(e) })
         },
-        getBanner() {
+        getBanner() { //轮播图
             axios.get(url.banner).then(res => {
                 this.bannerLists = res.data.lists
             })
         }
     },
     components: {
-        Foot,
+        Foot, //底部导航栏
         Swiper
     }
 })
