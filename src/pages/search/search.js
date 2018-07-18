@@ -4,9 +4,10 @@ import './search.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
-import qs from 'qs'
+import qs from 'qs' //A querystring parser with nesting support
 
 import mixin from 'js/mixin.js'
+import Velocity from 'velocity-animate'
 
 
 let { keyword, id } = qs.parse(location.search.substr(1))
@@ -37,7 +38,7 @@ new Vue({
         },
         move() {
             //console.log(window.pageYOffset)
-            //console.log(document.documentElement.scrollTop) 
+            // console.log(document.documentElement.scrollTop)
             //document.body.scrollTop always 0
             if (document.documentElement.scrollTop > 100) {
                 this.isShow = true
@@ -46,7 +47,7 @@ new Vue({
             }
         },
         toTop() {
-
+            Velocity(document.documentElement, "scroll", { duration: 1000 })
         }
 
 
