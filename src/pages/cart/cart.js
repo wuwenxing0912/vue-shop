@@ -19,6 +19,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import mixin from 'js/mixin.js';
 import url from 'js/api.js';
+import Velocity from 'velocity-animate'
 
 new Vue({
     el: '.container',
@@ -236,6 +237,24 @@ new Vue({
                 shop.editing = false
                 shop.editingMsg = '编辑'
             })
+        },
+        start(e, goods) {
+            goods.startX = e.changedTouches[0].clientX
+        },
+        end(e, shopIndex, goods, goodsIndex) {
+            let endX = e.changedTouches[0].clientX
+            let left = '0'
+            if (goods.startX - endX > 100) {
+                left = '-60px'
+            }
+            if (endX - goods.startX > 100) {
+                left = '0px' //使用Velocity必须要带上单位，否则无效
+            }
+            //console.log(this.$refs[`goods-${shopIndex}-${goodsIndex}`]);
+            Velocity(this.$refs[`goods-${shopIndex}-${goodsIndex}`], {
+                left
+            })
+
         }
     },
     mixins: [mixin]
