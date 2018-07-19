@@ -32,13 +32,14 @@
                         <div class="block block-order block-cart" v-for="(shop,shopIndex) in lists">
                             <div class="header">
                                 <div class="select-group js-select-group" v-on:click="selectShop(shop)">
-                                    <span class="check" v-bind:class="{checked:shop.checked}"></span>
+                                    <span class="check" v-bind:class="{checked:shop.checked}" v-show="!editingShop"></span>
+                                    <span class="check" v-bind:class="{checked:shop.removeChecked}" v-show="editingShop"></span>
                                 </div>
                                 <a class="shop-title">
                                     <i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
-                                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list" v-on:click="edit(shop,shopIndex)">                          
-                                    {{shop.editingMsg}}
-                                </a>
+                                <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list" v-on:click="edit(shop,shopIndex)">
+                  {{shop.editingMsg}}
+                </a>
                             </div>
                             <!---->
                             <div>
@@ -46,7 +47,8 @@
                                     <li class="block-item block-item-cart" v-bind:class="{editing:shop.editing}" v-for="(goods,goodsIndex) in shop.goodsList">
                                         <div>
                                             <div class="check-container" v-on:click="selectGoods(shop,goods)">
-                                                <span class="check" v-bind:class="{checked : goods.checked}"></span>
+                                                <span class="check" v-bind:class="{checked :editingShop ? goods.removeChecked : goods.checked}"></span>
+
                                             </div>
                                             <div class="name-card clearfix">
                                                 <a v-bind:href="'goods.html?id=' + goods.id" class="thumb js-goods-link">
@@ -71,11 +73,11 @@
                                                     <div class="num" v-show="shop.editing">
                                                         <!---->
                                                         <div class="quantity">
-                                                            <button type="button" class="minus disabled"></button>
+                                                            <button type="button" class="minus" v-bind:class="{disabled:goods.number===1}"></button>
                                                             <input type="text" pattern="[0-9]*" class="txt" v-model="goods.number">
                                                             <button type="button" class="plus "></button>
-                                                            <div class="response-area response-area-minus"></div>
-                                                            <div class="response-area response-area-plus"></div>
+                                                            <div class="response-area response-area-minus" v-on:click="reduce(goods)"></div>
+                                                            <div class="response-area response-area-plus" v-on:click="add(goods)"></div>
                                                         </div>
                                                     </div>
                                                     <div class="price c-orange">
@@ -85,7 +87,7 @@
                                                 </div>
                                                 <div class="error-box"></div>
                                             </div>
-                                            <div class="delete-btn">
+                                            <div class="delete-btn" v-on:click="remove(shop,shopIndex,goods,goodsIndex)">
                                                 <span>删除</span>
                                             </div>
                                         </div>
@@ -147,7 +149,7 @@
                         </div>
                         <div class="bottom-cart clear-fix">
                             <div class="select-all" v-on:click="selectAll()">
-                                <span class="check" v-bind:class="{checked:allSelected}"></span> 全选
+                                <span class="check" v-bind:class="{checked:editingShop ? allRemoveSelected : allSelected}"></span> 全选
                             </div>
                             <!-- 显示状态 -->
                             <div class="total-price" v-show="!editingShop">
@@ -155,25 +157,39 @@
                                 <span class="js-total-price" style="color: rgb(255, 102, 0);">{{total | currency}}</span>
                                 <p class="c-gray-dark">不含运费</p>
                             </div>
-                            <button href="javascript:;" v-bind:disabled="!selectLists.length" class="js-go-pay btn btn-orange-dark font-size-14" v-show="!editingShop">
+                            <button href="javascript:;" v-bind:disabled="!selectLists.length" class="js-go-pay btn btn-orange-dark font-size-14" v-show="!editingShop" >
                 结算 (3)
               </button>
                             <!-- 编辑状态 -->
-                            <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" v-show="editingShop">删除
+                            <button href="javascript:;" v-bind:disabled="!removeLists.length" class="j-delete-goods btn font-size-14 btn-red" v-show="editingShop" v-on:click="removeList()">删除
               </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="0SuefKPV4p" v-show="removePopup" style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000;  opacity: 1;"></div>
+        <div id="d2tfiX27YS" v-show="removePopup" class="popout-confirm popout-box" style="overflow: hidden; position: absolute; z-index: 1000; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0px); visibility: visible; border-radius: 4px; background: white; width: 270px; padding: 15px; opacity: 1;">
+            <div class="confirm-content font-size-14" style="line-height: 20px; padding: 5px 5px 10px;">
+                {{removeMsg}}
+            </div>
+            <hr style="margin: 9px -15px 10px;">
+            <div class="btn-2-1" style="width: 47.5%;">
+                <p class="js-cancel center font-size-16" style="padding-top: 5px;" @click="removePopup=false">取消</p>
+            </div>
+            <div class="btn-2-1" style="width: 47.5%;">
+                <p class="js-ok center c-green font-size-16" style="padding-top: 5px;" @click="removeConfirm">确定</p>
+            </div>
+        </div>
     </div>
-    <div class="footer" style="min-height: 86px;">
+
+    <!-- <div class="footer" style="min-height: 86px;">
         <div class="copyright">
             <div class="ft-copyright " style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);">
                 <a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a>
             </div>
         </div>
-    </div>
+    </div> -->
 </body>
 
 </html>
