@@ -19,7 +19,11 @@ import Vue from 'vue';
 import axios from 'axios';
 import mixin from 'js/mixin.js';
 import url from 'js/api.js';
-import Velocity from 'velocity-animate'
+import Velocity from 'velocity-animate';
+
+import Cart from 'js/cartService.js'
+import fetch from 'js/fetch.js'
+
 
 new Vue({
     el: '.container',
@@ -153,19 +157,25 @@ new Vue({
         },
         reduce(goods) {
             if (goods.number === 1) return
-            axios.post(url.cartReduce, {
-                id: goods.id,
-                number: 1
-            }).then(res => {
+                // axios.post(url.cartReduce, {
+                //     id: goods.id,
+                //     number: 1
+                // }).then(res => {
+                //     goods.number--
+                // })
+            Cart.reduce(goods.id).then(res => {
                 goods.number--
             })
 
         },
         add(goods) {
-            axios.post(url.cartAdd, {
-                id: goods.id,
-                number: 1
-            }).then(res => {
+            // axios.post(url.cartAdd, {
+            //         id: goods.id,
+            //         number: 1
+            //     }).then(res => {
+            //         goods.number++
+            //     })
+            Cart.add(goods.id).then(res => {
                 goods.number++
             })
         },
