@@ -12,6 +12,7 @@ import url from 'js/api.js'
 import qs from 'qs' //A querystring parser with nesting support
 import Swiper from 'components/Swiper.vue'
 
+
 import mixin from 'js/mixin.js'
 
 var id = qs.parse(location.search.substr(1))
@@ -66,6 +67,7 @@ new Vue({
             this.showSku = true
         },
         changeSkuNum(num) {
+            console.log(num)
             if (num < 0 && this.skuNum === 1) return;
             this.skuNum += num
         },
@@ -75,9 +77,11 @@ new Vue({
                 number: this.skuNum
             }).then(res => {
                 if (res.data.status === 200) {
+                    // console.log('before' + this.showAddMessage)
                     this.showSku = false
                     this.isAddCart = true
                     this.showAddMessage = true
+                        // console.log('after' + this.showAddMessage)
 
                     setTimeout(() => {
                         this.showAddMessage = false
@@ -92,9 +96,9 @@ new Vue({
     },
     watch: {
         showSku(val, oldVal) {
-            documnet.body.style.overflow = val ? 'hidden' : 'auto'
+            document.documentElement.style.overflow = val ? 'hidden' : 'auto'
             document.querySelector('html').style.overflow = val ? 'hidden' : 'auto'
-            documnet.body.style.height = val ? '100%' : 'auto'
+            document.documentElement.style.height = val ? '100%' : 'auto'
             document.querySelector('html').style.height = val ? '100%' : 'auto'
         }
     },
