@@ -44,7 +44,7 @@
                             <!---->
                             <div>
                                 <ul class="js-list block block-list block-list-cart border-0">
-                                    <li class="block-item block-item-cart" v-bind:ref="'goods-'+shopIndex+'-'+goodsIndex" v-bind:class="{editing:shop.editing}" v-for="(goods,goodsIndex) in shop.goodsList" v-on:touchstart="start($event,goods)" v-on:touchend="end($event,shopIndex,goods,goodsIndex)">
+                                    <li class="block-item block-item-cart" v-bind:ref="'goods-'+shopIndex+'-'+goodsIndex" v-bind:class="{editing:shop.editing}" v-for="(goods,goodsIndex) in shop.goodsList" v-bind:key="goods.id" v-on:touchstart="start($event,goods)" v-on:touchend="end($event,shopIndex,goods,goodsIndex)">
                                         <div>
                                             <div class="check-container" v-on:click="selectGoods(shop,goods)">
                                                 <span class="check" v-bind:class="{checked :editingShop ? goods.removeChecked : goods.checked}"></span>

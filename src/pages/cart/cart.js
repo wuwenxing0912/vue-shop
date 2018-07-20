@@ -212,6 +212,9 @@ new Vue({
                         this.removeShop()
                     }
                     this.removePopup = false
+                        //可解决左滑商品删除后，该商品之后的商品自动出现往左偏移的问题。但是用key解决更好
+                        //this.$refs[`goods-${shopIndex}-${goodsIndex}`][0].style.left = '0px'
+
                 })
             } else {
                 let ids = []
