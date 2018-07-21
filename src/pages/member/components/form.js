@@ -34,7 +34,7 @@ export default {
         }
     },
     watch: {
-        lists: {
+        lists: { //判断是否修改了数据，如果是然后再返回到上一级页面
             handler() {
                 this.$router.go(-1)
             },
