@@ -18,7 +18,8 @@ new Vue({
         lists: null,
         loading: false, //是否继续加载，
         allLoaded: false,
-        bannerLists: null
+        bannerLists: null,
+        obj: { age: 20 } //父子组件通信方式1：引用类型数据
     },
     created() {
         this.getLists() //首页数据
