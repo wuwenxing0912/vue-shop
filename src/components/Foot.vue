@@ -46,14 +46,15 @@ export default {
     return {
       navConfig,
       curIndex: parseInt(index) || 0,
-      footObj: this.obj//父子组件通信方式1：引用类型数据
+      footObj: JSON.parse(JSON.stringify(this.obj))//深复制，不会改变原数据
     };
   },
 
   created() {
     setTimeout(() => {
       this.footObj.age = 18
-    }, 5000);//父子组件通信方式1：引用类型数据。不推荐使用此种方式，在子组件内部修改数据以后，父组件的数据也发生同步的改变。
+      this.$emit('change',18)//父子组件通信方式2：自定义事件。通过$emit方法触发当前实例上的事件，此处自定义事件为 change。
+    }, 5000);
   },
   methods: {
     changeNav(list, index) {

@@ -19,7 +19,7 @@ new Vue({
         loading: false, //是否继续加载，
         allLoaded: false,
         bannerLists: null,
-        obj: { age: 20 } //父子组件通信方式1：引用类型数据
+        obj: { age: 20 } //父子组件通信方式2：自定义事件
     },
     created() {
         this.getLists() //首页数据
@@ -50,6 +50,9 @@ new Vue({
             axios.get(url.banner).then(res => {
                 this.bannerLists = res.data.lists
             })
+        },
+        changeAge(age) {
+            this.obj.age = age //父子组件通信方式2：自定义事件
         }
     },
     components: {
