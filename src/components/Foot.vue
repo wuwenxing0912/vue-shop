@@ -14,7 +14,6 @@
 
 <script>
 import qs from "qs";
-import bus from "js/bus";//引入全局事件bus
 
 let { index } = qs.parse(location.search.substr(1));
 let navConfig = [
@@ -41,21 +40,15 @@ let navConfig = [
 ];
 
 export default {
-  props: ["obj"],
   data() {
     //对于单Vue文件，data选项必须是一个函数，这样生成的每个示例各自可以维护一份独立的数据
     return {
       navConfig,
       curIndex: parseInt(index) || 0,
-      footObj: JSON.parse(JSON.stringify(this.obj))//深复制，不会改变原数据
     };
   },
 
   created() {
-    setTimeout(() => {
-      this.footObj.age = 18
-      bus.$emit('change',18)//父子组件通信方式3：全局事件。通过$emit方法触发当前实例上的事件
-    }, 5000);
   },
   methods: {
     changeNav(list, index) {

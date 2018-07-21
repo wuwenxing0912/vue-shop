@@ -10,7 +10,6 @@ import Swiper from 'components/Swiper.vue'
 import { InfiniteScroll } from 'mint-ui'
 Vue.use(InfiniteScroll)
 
-import bus from "js/bus"; //引入全局事件bus
 
 new Vue({
     el: '#app',
@@ -21,14 +20,10 @@ new Vue({
         loading: false, //是否继续加载，
         allLoaded: false,
         bannerLists: null,
-        obj: { age: 20 } //父子组件通信方式3：全局事件
     },
     created() {
         this.getLists() //首页数据
         this.getBanner()
-        bus.$on('change', (age) => {
-                this.obj.age = age
-            }) //全局事件监听
     },
     methods: {
         getLists() {

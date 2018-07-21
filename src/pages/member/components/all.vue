@@ -20,32 +20,42 @@
 
 
 <style scoped>
-  @import './address_base.css';
-  @import './address.css';
+@import "./address_base.css";
+@import "./address.css";
 </style>
 
 
 <script>
-
-import Address from 'js/addressService.js';
+//import Address from 'js/addressService.js';
 
 export default {
-  data(){
-    return {
-      lists:null
+  // data(){
+  //   return {
+  //     lists:null
+  //   }
+  // },
+  computed: {
+    lists() {
+      return this.$store.state.lists;
     }
   },
   created() {
-    Address.list().then(res=>{
-      this.lists = res.data.lists
-    })
+    // Address.list().then(res=>{
+    //   this.lists = res.data.lists
+    // })
+    if (!this.lists) {
+      this.$store.dispatch("getLists");
+    }
   },
-  methods:{
-    toEdit(list){
+  methods: {
+    toEdit(list) {
       // this.$router.push({path:'/address/form'})
-      this.$router.push({name:'form',query:{type:'edit',instance:list}})
+      this.$router.push({
+        name: "form",
+        query: { type: "edit", instance: list }
+      });
     }
   }
-}
+};
 </script>
 
