@@ -14,6 +14,7 @@
 
 <script>
 import qs from "qs";
+import bus from "js/bus";//引入全局事件bus
 
 let { index } = qs.parse(location.search.substr(1));
 let navConfig = [
@@ -53,7 +54,7 @@ export default {
   created() {
     setTimeout(() => {
       this.footObj.age = 18
-      this.$emit('change',18)//父子组件通信方式2：自定义事件。通过$emit方法触发当前实例上的事件，此处自定义事件为 change。
+      bus.$emit('change',18)//父子组件通信方式3：全局事件。通过$emit方法触发当前实例上的事件
     }, 5000);
   },
   methods: {
