@@ -48,6 +48,7 @@ new Vue({
         },
         getBanner() { //轮播图
             axios.get(url.banner).then(res => {
+                //console.log(res.data.lists)
                 this.bannerLists = res.data.lists
             })
         }

@@ -45,7 +45,7 @@ new Vue({
                 this.details.imgs.forEach((item) => {
                     this.bannerLists.push({
                         clickUrl: '',
-                        image: item
+                        img: item
                     })
                 })
             })

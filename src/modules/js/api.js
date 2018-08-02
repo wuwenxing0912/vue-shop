@@ -20,7 +20,7 @@ let url = {
 
 }
 
-let host = 'http://rapapi.org/mockjsdata/24170'
+let host = 'http://rap2api.taobao.org/app/mock/7058'
 
 for (let key in url) {
     if (url.hasOwnProperty(key)) {
